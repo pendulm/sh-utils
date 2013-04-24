@@ -1,0 +1,32 @@
+# a tiny code statistical tool
+# use for small projects only
+
+exts=( rb py c cc h )
+declare -A file_hash
+
+filelist=$(find . -type f)
+for f in $filelist
+do
+    fname=$(basename $f)
+    # filter hidden or swap file
+    if [[ $fname != *~ && $fname != \.* ]]
+    then
+        # get file extension
+        fext=${fname##*.}
+        for ext in ${exts[@]}
+        do
+            if [ "$ext" = "$fext" ]
+            then
+                file_hash["$ext"]+="$f\0"
+            fi
+        done
+    fi
+done
+
+for key in "${!file_hash[@]}"
+do
+    # echo $key
+    # echo ${file_hash[$key]}
+    echo -e -n ${file_hash[$key]} | wc --files0-from=- | sort -n
+    echo "------------"
+done
