@@ -2,12 +2,48 @@
 # a tiny code statistical tool
 # use for small projects only
 
-exts=( rb py c cc h )
+exts=( rb py c cc h js )
+declare -a ignore
 declare -A file_hash
+
+while getopts "i:h" opt
+do
+    case $opt in
+        i)
+            ignore+=($OPTARG);;
+	h)
+	    cat <<EOF
+
+Usage:
+ lines
+ lines -h
+ lines [-i ignore_pattern]
+
+Options:
+ -h     print this help
+ -i     ignore pattern
+EOF
+	    exit;;
+    esac
+done
+
+function match_in() {
+    local elem="$1"
+    shift
+    local striped
+    for pattern in "$@"
+    do
+        striped=${elem/$pattern/}
+        # matched
+        [[ $elem != $striped ]] && return 0
+    done
+    return 1
+}
 
 filelist=$(find . -type f)
 for f in $filelist
 do
+    match_in $f ${ignore[@]} && continue
     fname=$(basename $f)
     # filter hidden or swap file
     if [[ $fname != *~ && $fname != \.* ]]
