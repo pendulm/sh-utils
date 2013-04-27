@@ -44,7 +44,8 @@ filelist=$(find . -type f)
 for f in $filelist
 do
     match_in $f ${ignore[@]} && continue
-    fname=$(basename $f)
+    # fname=$(basename $f)
+    fname=${f##*/}
     # filter hidden or swap file
     if [[ $fname != *~ && $fname != \.* ]]
     then
@@ -64,6 +65,6 @@ for key in "${!file_hash[@]}"
 do
     # echo $key
     # echo ${file_hash[$key]}
-    echo -e -n ${file_hash[$key]} | wc --files0-from=- | sort -n
+    echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | sort -n
     echo "------------"
 done
