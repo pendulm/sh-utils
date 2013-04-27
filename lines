@@ -3,14 +3,17 @@
 # use for small projects only
 
 exts=( rb py c cc h js )
+summary=0
 declare -a ignore
 declare -A file_hash
 
-while getopts "i:h" opt
+while getopts "i:hs" opt
 do
     case $opt in
         i)
             ignore+=($OPTARG);;
+        s)
+            summary=1;;
 	h)
 	    cat <<EOF
 
@@ -61,10 +64,22 @@ do
     fi
 done
 
-for key in "${!file_hash[@]}"
-do
-    # echo $key
-    # echo ${file_hash[$key]}
-    echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | sort -n
+if [ $summary -eq 1 ]
+then
+    echo ext files lines
     echo "------------"
-done
+    for key in "${!file_hash[@]}"
+    do
+        echo -n "$key "
+        echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | nl | tail -1 | awk '{print $1, $2}'
+        echo "------------"
+    done
+else
+    for key in "${!file_hash[@]}"
+    do
+        # echo $key
+        # echo ${file_hash[$key]}
+        echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | sort -n
+        echo "------------"
+    done
+fi
