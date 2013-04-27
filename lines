@@ -71,7 +71,7 @@ then
     for key in "${!file_hash[@]}"
     do
         echo -n "$key "
-        echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | nl | tail -1 | awk '{print $1, $2}'
+        echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | nl | tail -1 | awk '{print $1-1, $2}'
         echo "------------"
     done
 else
