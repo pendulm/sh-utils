@@ -67,12 +67,10 @@ done
 if [ $summary -eq 1 ]
 then
     echo ext files lines
-    echo "------------"
     for key in "${!file_hash[@]}"
     do
         echo -n "$key "
         echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | nl | tail -1 | awk '{print $1-1, $2}'
-        echo "------------"
     done
 else
     for key in "${!file_hash[@]}"
@@ -80,6 +78,6 @@ else
         # echo $key
         # echo ${file_hash[$key]}
         echo -e -n ${file_hash[$key]} | wc -l --files0-from=- | sort -n
-        echo "------------"
+        echo
     done
 fi
