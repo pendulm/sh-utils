@@ -1,0 +1,22 @@
+#! /usr/bin/awk -f
+{
+    line[NR] = $0
+    nfield = max(nfield, NF)
+    for (i = 1; i <= NF; ++i) {
+	fwidth[i] = max(fwidth[i], length($i))
+    }
+}
+
+END {
+    for (i = 1; i <= NR; ++i) {
+	n = split(line[i], arr)
+	for (j = 1; j <= nfield; ++j) {
+	    printf("%*s%c", fwidth[j], arr[j], j < nfield ? " " : "\n")
+	}
+    }
+}
+
+
+function max(m, n) {
+    return m > n ? m : n
+}
