@@ -1,0 +1,3 @@
+#! /bin/bash
+[[ $# -eq 0 ]] && echo "${0}: no input file" && exit
+clang++ $1 -std=c++11 -Wall && ./a.out
