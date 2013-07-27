@@ -1,0 +1,9 @@
+#!/bin/bash
+
+[[ -n $1 && -n $2 ]] || { echo "xmv: filename1 filename2" >&2; exit 1; }
+
+tmpfile=$(mktemp)
+/bin/mv $1 $tmpfile
+/bin/mv $2 $1
+/bin/mv $tmpfile $1
+
